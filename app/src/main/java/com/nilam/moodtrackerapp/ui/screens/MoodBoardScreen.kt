@@ -6,25 +6,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
-import com.nilam.moodtrackerapp.getMoodIcon
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nilam.moodtrackerapp.MoodEntry
 import com.nilam.moodtrackerapp.R
+import com.nilam.moodtrackerapp.getMoodIcon
 import com.nilam.moodtrackerapp.viewmodel.MoodViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -32,12 +37,19 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun MoodBoardScreen(moodViewModel: MoodViewModel) {
 
-    val moods = moodViewModel.moods.sortedBy { it.date }
+    val moods = remember { moodViewModel.moods.sortedBy { it.date } }
+
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation ==
+            android.content.res.Configuration.ORIENTATION_LANDSCAPE
+
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFE6F1FF))
+            .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
 
@@ -47,42 +59,77 @@ fun MoodBoardScreen(moodViewModel: MoodViewModel) {
             fontWeight = FontWeight.Bold
         )
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(16.dp))
 
-        // =========================
-        // CARD LINE CHART
-        // =========================
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp)
-        ) {
+        // ======================
+        // LANDSCAPE MODE
+        // ======================
+        if (isLandscape) {
 
-            Column(Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
+            ) {
 
-                Text(stringResource(id = R.string.board_mood_flow), fontWeight = FontWeight.Bold)
+                // ----- Mood Flow kiri -----
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text(stringResource(id = R.string.board_mood_flow), fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.height(10.dp))
+                        LineChartWithDates(moods)
+                    }
+                }
 
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.width(16.dp))
 
-                LineChartWithDates(moods)
-
+                // ----- Mood Bar kanan -----
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Column(Modifier.padding(16.dp)) {
+                        Text(stringResource(id = R.string.board_mood_bar), fontWeight = FontWeight.Bold)
+                        Spacer(Modifier.height(12.dp))
+                        MoodPercentageBar(moods)
+                    }
+                }
             }
-        }
 
-        Spacer(Modifier.height(20.dp))
+        } else {
+            // ======================
+            // PORTRAIT MODE
+            // ======================
 
-        // =========================
-        // MOOD BAR + PERSENTASE
-        // =========================
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp)
-        ) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Column(Modifier.padding(16.dp)) {
+                    Text(stringResource(id = R.string.board_mood_flow), fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(10.dp))
+                    LineChartWithDates(moods)
+                }
+            }
 
-            Column(Modifier.padding(16.dp)) {
-                Text(stringResource(id = R.string.board_mood_bar), fontWeight = FontWeight.Bold)
-                Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(20.dp))
 
-                MoodPercentageBar(moods)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Column(Modifier.padding(16.dp)) {
+                    Text(stringResource(id = R.string.board_mood_bar), fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(12.dp))
+                    MoodPercentageBar(moods)
+                }
             }
         }
 
@@ -96,21 +143,19 @@ fun MoodBoardScreen(moodViewModel: MoodViewModel) {
 
         Spacer(Modifier.height(10.dp))
 
-        LazyColumn {
-            items(moods) { item ->
-                TimelineItem(
-                    date = item.date,
-                    mood = item.mood,
-                    note = item.note ?: ""
-                )
-                Spacer(Modifier.height(12.dp))
-            }
+        moods.forEach { item ->
+            TimelineItem(
+                date = item.date,
+                mood = item.mood,
+                note = item.note.orEmpty()
+            )
+            Spacer(Modifier.height(12.dp))
         }
     }
 }
 
 //////////////////////////////////////////////////////////////
-//  LINE CHART + TANGGAL + ICON PNG
+// LINE CHART + TANGGAL
 //////////////////////////////////////////////////////////////
 
 @Composable
@@ -126,7 +171,6 @@ fun LineChartWithDates(moods: List<MoodEntry>) {
 
     Column {
 
-        // ======================== LINE CHART ========================
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
@@ -143,7 +187,6 @@ fun LineChartWithDates(moods: List<MoodEntry>) {
                 Offset(index * stepX, y)
             }
 
-            // BUAT GARIS
             drawPath(
                 path = Path().apply {
                     moveTo(points.first().x, points.first().y)
@@ -153,7 +196,6 @@ fun LineChartWithDates(moods: List<MoodEntry>) {
                 style = Stroke(width = 6f)
             )
 
-            // TITIK CIRCLE
             points.forEach {
                 drawCircle(Color(0xFF0A63FF), radius = 10f, center = it)
             }
@@ -161,20 +203,19 @@ fun LineChartWithDates(moods: List<MoodEntry>) {
 
         Spacer(Modifier.height(6.dp))
 
-        // ==================== TANGGAL DI BAWAH CHART ====================
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             dates.forEach { d ->
-                Text(d, style = MaterialTheme.typography.bodySmall)
+                Text(d, style = MaterialTheme.typography.titleMedium)
             }
         }
     }
 }
 
 //////////////////////////////////////////////////////////////
-//  MOOD PERCENTAGE BAR
+// MOOD PERCENTAGE BAR
 //////////////////////////////////////////////////////////////
 
 @Composable
@@ -187,7 +228,6 @@ fun MoodPercentageBar(moods: List<MoodEntry>) {
     val sad = moods.count { it.mood == "😢" } / total
     val angry = moods.count { it.mood == "😡" } / total
     val sleepy = moods.count { it.mood == "😴" } / total
-
 
     val gradient = Brush.horizontalGradient(
         listOf(
@@ -204,7 +244,7 @@ fun MoodPercentageBar(moods: List<MoodEntry>) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(26.dp)
+                .height(40.dp)
                 .background(gradient, RoundedCornerShape(20.dp))
         )
 
@@ -219,14 +259,14 @@ fun MoodPercentageBar(moods: List<MoodEntry>) {
                 "%.0f".format(angry * 100),
                 "%.0f".format(sleepy * 100)
             ),
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
         )
-
     }
 }
 
 //////////////////////////////////////////////////////////////
-//  TIMELINE ITEM
+// TIMELINE ITEM
 //////////////////////////////////////////////////////////////
 
 @Composable
@@ -235,15 +275,14 @@ fun TimelineItem(date: String, mood: String, note: String) {
     val iconRes = getMoodIcon(mood)
 
     Row(
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
-        // CIRCLE MOOD ICON
         Box(
             modifier = Modifier
                 .size(40.dp)
                 .background(Color.White, CircleShape),
-            contentAlignment = androidx.compose.ui.Alignment.Center
+            contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = painterResource(iconRes),
@@ -258,13 +297,14 @@ fun TimelineItem(date: String, mood: String, note: String) {
         Column {
             Text(formatDateLong(date), fontWeight = FontWeight.Bold)
             Text(stringResource(id = R.string.board_mood_label, mood))
-            if (note.isNotEmpty()) Text(note, style = MaterialTheme.typography.bodySmall)
+            if (note.isNotEmpty()) Text(note, style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
 
 //////////////////////////////////////////////////////////////
-//  HELPERS
+// HELPERS
 //////////////////////////////////////////////////////////////
 
 fun moodToInt(mood: String): Float {
