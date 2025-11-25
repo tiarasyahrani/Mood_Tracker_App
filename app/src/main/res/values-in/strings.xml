@@ -1,0 +1,86 @@
+<resources>
+    <string name="app_name">Mood Tracker</string>
+    <string name="settings">Pengaturan</string>
+    <string name="general">Umum</string>
+    <string name="other">Lainnya</string>
+    <string name="reminder_time">Waktu pengingat</string>
+    <string name="backup_restore">Backup dan restore</string>
+    <string name="start_week">Awal minggu</string>
+    <string name="language">Bahasa</string>
+    <string name="change_theme">Ubah tema</string>
+    <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="terms_conditions">Syarat dan Ketentuan</string>
+    <string name="english">Bahasa Inggris</string>
+    <string name="indonesian">Bahasa Indonesia</string>
+    <!-- Home Screen -->
+    <string name="add_mood">Tambah Mood</string>
+    <string name="previous_month">Bulan sebelumnya</string>
+    <string name="next_month">Bulan berikutnya</string>
+
+    <!-- Calendar Days -->
+    <string name="sun">Min</string>
+    <string name="mon">Sen</string>
+    <string name="tue">Sel</string>
+    <string name="wed">Rab</string>
+    <string name="thu">Kam</string>
+    <string name="fri">Jum</string>
+    <string name="sat">Sab</string>
+
+    <!-- Notes -->
+    <string name="edit_note">Edit Catatan</string>
+    <string name="your_note">Catatan kamu</string>
+    <string name="save">Simpan</string>
+    <string name="cancel">Batal</string>
+
+    <!-- Mood Record -->
+    <string name="date_display">Tanggal: %1$s</string>
+    <string name="mood_display">Mood: %1$s</string>
+    <string name="no_record">Belum ada catatan</string>
+    <string name="tap_add_note">Ketuk untuk menambahkan catatan...</string>
+
+    <string name="back">Kembali</string>
+    <string name="save_add_mood">Simpan</string>
+    <string name="how_was_your_day">Bagaimana harimu?</string>
+    <string name="write_about_today">Tulis tentang hari ini</string>
+    <string name="write_something">Tulis sesuatu...</string>
+
+        <string name="calendar_title">Kalender Mood - %1$s %2$d</string>
+        <string name="date_label">Tanggal: %1$s</string>
+        <string name="mood_label">Mood: %1$s</string>
+        <string name="note_label">Catatan: %1$s</string>
+
+        <string name="history_date">Riwayat Tanggal: %1$s</string>
+        <string name="history_mood">Riwayat Mood: %1$s</string>
+        <string name="history_note">Riwayat Catatan: %1$s</string>
+
+        <string name="quote_search_icon_desc">Cari</string>
+        <string name="quote_search_placeholder">Cari kutipan...</string>
+        <string name="quote_unknown_author">Tidak diketahui</string>
+        <string name="quote_failed_load">Gagal memuat kutipan: %1$s</string>
+        <string name="quote_share_via">Bagikan Kutipan via</string>
+        <string name="quote_refresh">Segarkan</string>
+        <string name="quote_copy">Salin</string>
+        <string name="quote_share">Bagikan</string>
+
+    <string name="board_title">Grafik Mood</string>
+    <string name="board_mood_flow">Aliran Mood</string>
+    <string name="board_mood_bar">Mood Bar</string>
+    <string name="board_timeline">Timeline</string>
+    <string name="board_not_enough_data">Data tidak cukup</string>
+    <string name="board_mood_label">Mood: %1$s</string>
+    <!-- res/values/strings.xml -->
+    <string name="board_percentage_format">😊 %1$s%%   😐 %2$s%%   😢 %3$s%%   😡 %4$s%%   😴 %5$s%%</string>
+
+    <string name="nav_diary">Buku Harian</string>
+    <string name="nav_diary_desc">Menu Diary</string>
+
+    <string name="nav_quotes">Kutipan</string>
+    <string name="nav_quotes_desc">Menu Quotes</string>
+
+    <string name="nav_moodboard">Mood Board</string>
+    <string name="nav_moodboard_desc">Menu Mood Board</string>
+
+    <string name="nav_setting">Pengaturan</string>
+    <string name="nav_setting_desc">Menu Pengaturan</string>
+
+</resources>
