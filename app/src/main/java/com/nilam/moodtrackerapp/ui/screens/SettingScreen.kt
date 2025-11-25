@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -17,12 +19,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.work.WorkManager
 import kotlinx.coroutines.launch
 import com.nilam.moodtrackerapp.data.ReminderPreferences
 import com.nilam.moodtrackerapp.utils.ReminderScheduler
 import com.nilam.moodtrackerapp.MainActivity
+import android.content.res.Configuration
+import androidx.compose.ui.platform.LocalConfiguration
 import com.nilam.moodtrackerapp.utils.LocaleHelper
 import com.nilam.moodtrackerapp.R
+import kotlinx.serialization.json.Json.Default.configuration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,9 +37,14 @@ fun SettingScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    val scrollState = rememberScrollState()
+
     var isDarkTheme by remember { mutableStateOf(false) }
 
-    // === REMINDER STATE ===
     val savedTime by ReminderPreferences.getReminderTime(context)
         .collectAsState(initial = "20:00")
 
@@ -63,7 +74,11 @@ fun SettingScreen(
             .fillMaxSize()
             .background(Color(0xFFE3F2FD))
             .padding(16.dp)
-    ) {
+            .let {
+                if (isLandscape) it.verticalScroll(scrollState) else it
+            }
+    )
+    {
 
         Text(
             text = stringResource(R.string.settings),
@@ -76,7 +91,6 @@ fun SettingScreen(
 
         SectionTitle(stringResource(R.string.general))
 
-        // === REMINDER SWITCH ===
         SettingItemSwitch(
             icon = Icons.Default.Notifications,
             title = stringResource(R.string.reminder_time),
@@ -89,8 +103,14 @@ fun SettingScreen(
                     ReminderPreferences.saveReminderEnabled(context, it)
                 }
 
-                if (it) showTimePicker = true
+                if (it) {
+                    showTimePicker = true
+                    ReminderScheduler.scheduleDailyReminder(context)
+                } else {
+                    WorkManager.getInstance(context).cancelUniqueWork("daily_reminder")
+                }
             }
+
         )
 
         // Backup

@@ -1,6 +1,7 @@
 package com.nilam.moodtrackerapp
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,6 +15,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.nilam.moodtrackerapp.ui.screens.AddMoodScreen
 import com.nilam.moodtrackerapp.ui.screens.HomeScreen
 import com.nilam.moodtrackerapp.ui.screens.MoodBoardScreen
@@ -21,6 +25,7 @@ import com.nilam.moodtrackerapp.ui.screens.QuoteScreen
 import com.nilam.moodtrackerapp.ui.screens.SettingScreen
 import com.nilam.moodtrackerapp.utils.NotificationUtils
 import com.nilam.moodtrackerapp.utils.LocaleHelper
+import com.nilam.moodtrackerapp.utils.ReminderScheduler
 import com.nilam.moodtrackerapp.viewmodel.MoodViewModel
 
 class MainActivity : ComponentActivity() {
@@ -29,11 +34,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    100
+                )
+            }
         }
 
 
         NotificationUtils.createNotificationChannel(this)
+        ReminderScheduler.scheduleDailyReminder(this)
+
 
         setContent {
             MainApp()
