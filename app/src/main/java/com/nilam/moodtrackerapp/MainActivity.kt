@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.nilam.moodtrackerapp.ui.screens.AddMoodScreen
 import com.nilam.moodtrackerapp.ui.screens.HomeScreen
@@ -27,11 +29,9 @@ import com.nilam.moodtrackerapp.utils.NotificationUtils
 import com.nilam.moodtrackerapp.utils.ReminderScheduler
 import com.nilam.moodtrackerapp.viewmodel.MoodViewModel
 
+
 class MainActivity : ComponentActivity() {
 
-    // =====================================================
-    // Apply bahasa setiap Activity dibuat
-    // =====================================================
     override fun attachBaseContext(newBase: Context) {
         val lang = LocaleHelper.getSavedLanguage(newBase)
         val context = LocaleHelper.setLocale(newBase, lang)
@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // ====== PERMISSION NOTIFICATION (Android 13+) ======
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -56,7 +55,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        // ====== CHANNEL & REMINDER ======
         NotificationUtils.createNotificationChannel(this)
         ReminderScheduler.scheduleDailyReminder(this)
 
@@ -68,7 +66,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun MainApp() {
 
@@ -77,7 +74,29 @@ fun MainApp() {
     val vm: MoodViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 
     Scaffold(
-        bottomBar = { HomeBottomBar(selectedPage) { selectedPage = it } }
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { showAddScreen = true },
+                containerColor = Color(0xFF0277BD),
+                contentColor = Color.White,
+                shape = CircleShape,
+
+                modifier = Modifier
+                    .size(65.dp)
+                    .offset(y = 50.dp)
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Mood")
+            }
+        },
+
+        floatingActionButtonPosition = FabPosition.Center,
+
+        bottomBar = {
+            HomeBottomBar(
+                selectedPage = selectedPage,
+                onPageSelected = { selectedPage = it }
+            )
+        }
     ) { paddingValues ->
 
         Box(
@@ -86,7 +105,6 @@ fun MainApp() {
                 .padding(paddingValues)
         ) {
 
-            // =========== SCREEN ADD MOOD ============
             if (showAddScreen) {
                 AddMoodScreen(
                     onSave = { moodEntry ->
@@ -95,20 +113,14 @@ fun MainApp() {
                     },
                     onBack = { showAddScreen = false }
                 )
-            }
-
-            // =========== NAVIGASI PAGE ============
-            else {
+            } else {
                 when (selectedPage) {
                     0 -> HomeScreen(
                         moodViewModel = vm,
                         onAdd = { showAddScreen = true }
                     )
-
                     1 -> QuoteScreen()
-
                     2 -> MoodBoardScreen(moodViewModel = vm)
-
                     3 -> SettingScreen()
                 }
             }
@@ -116,77 +128,66 @@ fun MainApp() {
     }
 }
 
+
 @Composable
-fun HomeBottomBar(selectedPage: Int, onPageSelected: (Int) -> Unit) {
+fun HomeBottomBar(
+    selectedPage: Int,
+    onPageSelected: (Int) -> Unit
+) {
     NavigationBar(containerColor = Color(0xBAFFFFFF)) {
 
         NavigationBarItem(
             selected = selectedPage == 0,
             onClick = { onPageSelected(0) },
-            icon = {
-                Icon(
-                    Icons.Default.Menu,
-                    contentDescription = stringResource(R.string.nav_diary_desc)
-                )
-            },
+            icon = { Icon(Icons.Default.Menu, contentDescription = "Diary") },
             label = {
                 Text(
-                text = stringResource(R.string.nav_diary),
+                    text = stringResource(R.string.nav_diary),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium
-            ) }
+                )
+            }
         )
 
         NavigationBarItem(
             selected = selectedPage == 1,
             onClick = { onPageSelected(1) },
-            icon = {
-                Icon(
-                    Icons.Default.Category,
-                    contentDescription = stringResource(R.string.nav_quotes_desc)
-                )
-            },
+            icon = { Icon(Icons.Default.Category, contentDescription = "Quotes") },
             label = {
                 Text(
                     text = stringResource(R.string.nav_quotes),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium
-                ) }
+                )
+            }
         )
 
-        Spacer(Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f)) // space buat FAB
 
         NavigationBarItem(
             selected = selectedPage == 2,
             onClick = { onPageSelected(2) },
-            icon = {
-                Icon(
-                    Icons.Default.Dashboard,
-                    contentDescription = stringResource(R.string.nav_moodboard_desc)
-                )
-            },
+            icon = { Icon(Icons.Default.Dashboard, contentDescription = "Moodboard") },
             label = {
                 Text(
                     text = stringResource(R.string.nav_moodboard),
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Medium
-                ) }
+                )
+            }
         )
 
         NavigationBarItem(
             selected = selectedPage == 3,
             onClick = { onPageSelected(3) },
-            icon = {
-                Icon(
-                    Icons.Default.Settings,
-                    contentDescription = stringResource(R.string.nav_setting_desc)
+            icon = { Icon(Icons.Default.Settings, contentDescription = "Setting") },
+            label = {
+                Text(
+                    text = stringResource(R.string.nav_setting),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium
                 )
-            },
-            label = { Text(
-                text = stringResource(R.string.nav_setting) ,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Medium
-            ) }
+            }
         )
     }
 }

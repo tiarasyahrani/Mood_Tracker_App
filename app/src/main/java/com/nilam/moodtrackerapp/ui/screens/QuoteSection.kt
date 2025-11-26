@@ -1,24 +1,22 @@
 package com.nilam.moodtrackerapp.ui.screens
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -38,7 +36,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 /* ---------------------------------------------------
- SEARCH BAR CANTIK
+ BEAUTIFUL MODERN SEARCH BAR (2025 Design)
 ---------------------------------------------------- */
 @Composable
 fun BeautifulSearchBar(
@@ -48,6 +46,9 @@ fun BeautifulSearchBar(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
+        placeholder = {
+            Text("Search quotes...", color = Color(0xAA000000))
+        },
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
@@ -55,28 +56,29 @@ fun BeautifulSearchBar(
                 tint = Color(0xFF01579B)
             )
         },
-        placeholder = { Text("Search quotes...") },
-        shape = RoundedCornerShape(30.dp),
+        shape = RoundedCornerShape(28.dp),
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(0xFF0288D1),
-            unfocusedBorderColor = Color(0xFF81D4FA),
+            focusedBorderColor = Color(0xFF0277BD),
+            unfocusedBorderColor = Color(0x330277BD),
             cursorColor = Color(0xFF0277BD),
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(55.dp)
-            .padding(bottom = 8.dp)
-            .shadow(4.dp, RoundedCornerShape(30.dp))
+            .height(58.dp)
+            .shadow(8.dp, RoundedCornerShape(28.dp), clip = false)
+            .background(Color.White.copy(alpha = 0.4f), RoundedCornerShape(28.dp))
     )
 }
 
 /* ---------------------------------------------------
- QUOTE SCREEN
+ QUOTE SCREEN MODERN
 ---------------------------------------------------- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuoteScreen() {
+
+    /* STATE */
     var quotes by remember { mutableStateOf(listOf<String>()) }
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var isRefreshing by remember { mutableStateOf(false) }
@@ -84,24 +86,23 @@ fun QuoteScreen() {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val clipboard = LocalClipboardManager.current
-
     val client = remember { HttpClient(CIO) }
 
-    /* FETCH QUOTES FUNCTION */
+    /* FETCH QUOTES */
     fun fetchQuotes() {
         scope.launch {
             try {
                 isRefreshing = true
 
-                val responseString: String =
+                val response: String =
                     client.get("https://zenquotes.io/api/quotes").body()
 
-                val json = Json.parseToJsonElement(responseString).jsonArray
+                val json = Json.parseToJsonElement(response).jsonArray
 
                 val list = json.take(30).map {
-                    val quote = it.jsonObject["q"]?.jsonPrimitive?.content ?: ""
-                    val author = it.jsonObject["a"]?.jsonPrimitive?.content ?: "Unknown"
-                    "\"$quote\"\n- $author"
+                    val quote = it.jsonObject["q"]!!.jsonPrimitive.content
+                    val author = it.jsonObject["a"]!!.jsonPrimitive.content
+                    "\"$quote\"\n— $author"
                 }
 
                 quotes = list
@@ -130,21 +131,23 @@ fun QuoteScreen() {
         it.contains(searchQuery.text, ignoreCase = true)
     }
 
+    /* AUTO FETCH WHEN OPEN */
     LaunchedEffect(Unit) { fetchQuotes() }
 
-    Scaffold(
-    ) { paddingValues ->
+    /* ---------------------------------------------------
+       UI LAYOUT
+    ---------------------------------------------------- */
+    Scaffold { paddingValues ->
 
-        /* BACKGROUND GRADIENT */
+        /* GRADIENT BACKGROUND MODERN LEMBUT */
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            Color(0xFF4FC3F7),
-                            Color(0xFF0288D1),
-                            Color(0xFF01579B)
+                            Color(0xFFBFE0EF),
+                            Color(0xFF57B0D9),
                         )
                     )
                 )
@@ -154,63 +157,93 @@ fun QuoteScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(12.dp)
+                    .padding(14.dp)
             ) {
 
-                /* Search Bar */
+                /* SEARCH BAR */
                 BeautifulSearchBar(
                     value = searchQuery,
                     onValueChange = { searchQuery = it }
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-                /** ⬇️ PULL TO REFRESH (ala Instagram) */
+                /* PULL TO REFRESH */
                 SwipeRefresh(
                     state = rememberSwipeRefreshState(isRefreshing),
                     onRefresh = { fetchQuotes() },
                 ) {
 
                     LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
+
                         items(filteredQuotes) { q ->
-                            Card(
-                                shape = RoundedCornerShape(12.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f)),
-                                modifier = Modifier.fillMaxWidth()
+
+                            /* ---------------------------------------------------
+                               GLASSMORPHISM CARD STYLE
+                            ---------------------------------------------------- */
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .blur(0.5.dp)
+                                    .background(
+                                        Color.White.copy(alpha = 0.20f),
+                                        RoundedCornerShape(18.dp)
+                                    )
+                                    .padding(14.dp)
                             ) {
-                                Column(
-                                    modifier = Modifier.padding(16.dp)
-                                ) {
+
+                                Column {
+
+                                    /* QUOTE TEXT */
                                     Text(
                                         text = q,
-                                        textAlign = TextAlign.Start,
                                         color = Color.Black,
+                                        textAlign = TextAlign.Start,
                                         style = MaterialTheme.typography.bodyLarge
                                     )
 
-                                    Spacer(Modifier.height(10.dp))
+                                    Spacer(Modifier.height(14.dp))
 
-                                    /* SHARE + COPY Buttons */
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.End
+                                        horizontalArrangement = Arrangement.End,
+                                        verticalAlignment = Alignment.CenterVertically
                                     ) {
-                                        IconButton(onClick = { copyQuote(q) }) {
+                                        /* COPY BUTTON ROUND */
+                                        IconButton(
+                                            onClick = { copyQuote(q) },
+                                            modifier = Modifier
+                                                .size(36.dp)
+                                                .background(
+                                                    Color.White.copy(alpha = 0.35f),
+                                                    CircleShape
+                                                )
+                                        ) {
                                             Icon(
                                                 Icons.Default.ContentCopy,
                                                 contentDescription = "Copy",
-                                                tint = Color(0xFF0277BD)
+                                                tint = Color(0xFF1C4564)
                                             )
                                         }
 
-                                        IconButton(onClick = { shareQuote(q) }) {
+                                        Spacer(Modifier.width(15.dp))
+
+                                        IconButton(
+                                            onClick = { shareQuote(q) },
+                                            modifier = Modifier
+                                                .size(36.dp)
+                                                .background(
+                                                    Color.White.copy(alpha = 0.35f),
+                                                    CircleShape
+                                                )
+                                        ) {
                                             Icon(
                                                 Icons.Default.Share,
                                                 contentDescription = "Share",
-                                                tint = Color(0xFF01579B)
+                                                tint = Color(0xFF1C4564)
                                             )
                                         }
                                     }

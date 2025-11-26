@@ -76,17 +76,6 @@ fun HomeScreen(
                 modifier = Modifier.matchParentSize()
             )
 
-            Scaffold(
-                floatingActionButton = {
-                    FloatingActionButton(
-                        onClick = { onAdd() },
-                        containerColor = Color(0xFF0277BD),
-                        contentColor = Color.White
-                    ) { Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_mood)) }
-                },
-                floatingActionButtonPosition = FabPosition.Center,
-                containerColor = Color.Transparent
-            ) {
 
                 Column(
                     modifier = Modifier
@@ -199,7 +188,7 @@ fun HomeScreen(
                         )
                     }
                 }
-            }
+
         }
         return
     }
@@ -214,20 +203,6 @@ fun HomeScreen(
             mood = moodToday,
             modifier = Modifier.matchParentSize()
         )
-
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { onAdd() },
-                    containerColor = Color(0xFF0277BD),
-                    contentColor = Color.White
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_mood))
-                }
-            },
-            floatingActionButtonPosition = FabPosition.Center,
-            containerColor = Color.Transparent
-        ) {
 
             Row(
                 modifier = Modifier
@@ -329,7 +304,6 @@ fun HomeScreen(
                     }
                 }
             }
-        }
     }
 }
 
