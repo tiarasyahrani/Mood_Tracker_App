@@ -133,15 +133,6 @@ fun QuoteScreen() {
     LaunchedEffect(Unit) { fetchQuotes() }
 
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { fetchQuotes() },
-                containerColor = Color(0xFF0277BD)
-            ) {
-                Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = Color.White)
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
 
         /* BACKGROUND GRADIENT */

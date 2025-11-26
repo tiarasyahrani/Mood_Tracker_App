@@ -52,12 +52,12 @@ fun CalendarScreen(viewModel: MoodViewModel) {
                         .size(40.dp)
                         .background(
                             when (moodToday?.mood) {
-                                "😄" -> Color(0xFFB2FF59) // Hijau
-                                "😐" -> Color(0xFFFFF59D) // Kuning
-                                "😢" -> Color(0xFF81D4FA) // Biru
-                                "😡" -> Color(0xFFFF8A80) // Merah
-                                "😴" -> Color(0xFFD7CCC8) // Abu
-                                else -> Color(0xFFE0E0E0) // Default abu muda
+                                "😄" -> Color(0xFFB2FF59)
+                                "😐" -> Color(0xFFFFF59D)
+                                "😢" -> Color(0xFF81D4FA)
+                                "😡" -> Color(0xFFFF8A80)
+                                "😴" -> Color(0xFFD7CCC8)
+                                else -> Color(0xFFE0E0E0)
                             }
                         )
                         .clickable { selectedDate = date }

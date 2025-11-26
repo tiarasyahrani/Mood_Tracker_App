@@ -1,6 +1,7 @@
 package com.nilam.moodtrackerapp.ui.theme
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -18,10 +19,17 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun MoodTrackerTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
+fun MoodTrackerTheme(
+    darkTheme: Boolean = false,
+    content: @Composable () -> Unit
+) {
+
+    val colors = if (darkTheme) DarkColors else LightColors
+
     MaterialTheme(
-        colorScheme = if (darkTheme) DarkColors else LightColors,
-        typography = androidx.compose.material3.Typography(),
+        colorScheme = colors,
+        typography = Typography,
         content = content
     )
 }
+

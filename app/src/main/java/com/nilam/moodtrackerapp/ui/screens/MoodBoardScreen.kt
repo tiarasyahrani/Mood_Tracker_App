@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nilam.moodtrackerapp.MoodEntry
 import com.nilam.moodtrackerapp.R
 import com.nilam.moodtrackerapp.getMoodIcon
@@ -55,7 +56,8 @@ fun MoodBoardScreen(moodViewModel: MoodViewModel) {
 
         Text(
             text = stringResource(id = R.string.board_title),
-            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = 22.sp,
             fontWeight = FontWeight.Bold
         )
 
@@ -137,7 +139,7 @@ fun MoodBoardScreen(moodViewModel: MoodViewModel) {
 
         Text(
             stringResource(id = R.string.board_timeline),
-            style = MaterialTheme.typography.titleMedium,
+            fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
 
