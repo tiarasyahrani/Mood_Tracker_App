@@ -61,7 +61,7 @@ fun BeautifulSearchBar(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFF0277BD),
             unfocusedBorderColor = Color(0x330277BD),
-            cursorColor = Color(0xFF0277BD),
+            cursorColor = Color(0xFF93D8FF),
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -146,8 +146,8 @@ fun QuoteScreen() {
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            Color(0xFFBFE0EF),
-                            Color(0xFF57B0D9),
+                            Color(0xC4043E6E),
+                            Color(0xFFFFFFFF),
                         )
                     )
                 )
@@ -225,7 +225,7 @@ fun QuoteScreen() {
                                             Icon(
                                                 Icons.Default.ContentCopy,
                                                 contentDescription = "Copy",
-                                                tint = Color(0xFF1C4564)
+                                                tint = Color(0xFF0277BD)
                                             )
                                         }
 
@@ -243,7 +243,7 @@ fun QuoteScreen() {
                                             Icon(
                                                 Icons.Default.Share,
                                                 contentDescription = "Share",
-                                                tint = Color(0xFF1C4564)
+                                                tint = Color(0xFF0277BD)
                                             )
                                         }
                                     }

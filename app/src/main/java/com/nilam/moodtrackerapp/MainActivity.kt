@@ -8,11 +8,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -134,60 +136,77 @@ fun HomeBottomBar(
     selectedPage: Int,
     onPageSelected: (Int) -> Unit
 ) {
-    NavigationBar(containerColor = Color(0xBAFFFFFF)) {
 
-        NavigationBarItem(
-            selected = selectedPage == 0,
-            onClick = { onPageSelected(0) },
-            icon = { Icon(Icons.Default.Menu, contentDescription = "Diary") },
-            label = {
-                Text(
-                    text = stringResource(R.string.nav_diary),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
+    Box(
+        modifier = Modifier
+            .clip(
+                RoundedCornerShape(
+                    topStart = 26.dp,
+                    topEnd = 26.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = 0.dp
                 )
-            }
-        )
+            )
+    ) {
+        NavigationBar(
+            containerColor = Color(0xA6BEDDF8),
+            tonalElevation = 0.dp
+        ) {
 
-        NavigationBarItem(
-            selected = selectedPage == 1,
-            onClick = { onPageSelected(1) },
-            icon = { Icon(Icons.Default.Category, contentDescription = "Quotes") },
-            label = {
-                Text(
-                    text = stringResource(R.string.nav_quotes),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        )
+            NavigationBarItem(
+                selected = selectedPage == 0,
+                onClick = { onPageSelected(0) },
+                icon = { Icon(Icons.Default.Menu, contentDescription = "Diary") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.nav_diary),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            )
 
-        Spacer(modifier = Modifier.weight(1f)) // space buat FAB
+            NavigationBarItem(
+                selected = selectedPage == 1,
+                onClick = { onPageSelected(1) },
+                icon = { Icon(Icons.Default.Category, contentDescription = "Quotes") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.nav_quotes),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            )
 
-        NavigationBarItem(
-            selected = selectedPage == 2,
-            onClick = { onPageSelected(2) },
-            icon = { Icon(Icons.Default.Dashboard, contentDescription = "Moodboard") },
-            label = {
-                Text(
-                    text = stringResource(R.string.nav_moodboard),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        )
+            Spacer(modifier = Modifier.weight(1f))
 
-        NavigationBarItem(
-            selected = selectedPage == 3,
-            onClick = { onPageSelected(3) },
-            icon = { Icon(Icons.Default.Settings, contentDescription = "Setting") },
-            label = {
-                Text(
-                    text = stringResource(R.string.nav_setting),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        )
+            NavigationBarItem(
+                selected = selectedPage == 2,
+                onClick = { onPageSelected(2) },
+                icon = { Icon(Icons.Default.Dashboard, contentDescription = "Moodboard") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.nav_moodboard),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            )
+
+            NavigationBarItem(
+                selected = selectedPage == 3,
+                onClick = { onPageSelected(3) },
+                icon = { Icon(Icons.Default.Settings, contentDescription = "Setting") },
+                label = {
+                    Text(
+                        text = stringResource(R.string.nav_setting),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            )
+        }
     }
 }
+

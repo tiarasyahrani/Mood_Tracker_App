@@ -21,7 +21,7 @@ fun SparkleGlitterBackground(
         "😢" -> Color(0xFF81D4FA)
         "😡" -> Color(0xFFFF8A80)
         "😴" -> Color(0xFFD1C4E9)
-        else -> Color(0xFFE0E0E0)
+        else -> Color(0xFFE3F2FD)
     }
 
     val glitterColors = listOf(

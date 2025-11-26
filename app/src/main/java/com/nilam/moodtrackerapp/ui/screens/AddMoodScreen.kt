@@ -42,9 +42,8 @@ fun AddMoodScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF9AB5C2),
-                        Color(0xFF29B6F6),
-                        Color(0xFF26C6DA)
+                        Color(0xC4043E6E),
+                        Color(0xFFFFFFFF),
                     )
                 )
             )
