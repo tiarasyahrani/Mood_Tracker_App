@@ -1,99 +1,146 @@
-🌙 Mood Tracker App
+# 🌙 Mood Tracker App
 
 Aplikasi Android untuk melacak suasana hati harian, membaca quotes positif, menyimpan jurnal singkat, dan memantau perkembangan emosi melalui mood board.
 
+---
 
+## 📌 Fitur Utama
 
-📌 Fitur Utama
-🗒️ 1. Diary / Dashboard
+### 🗒️ 1. Diary / Dashboard
 
-Menampilkan ringkasan suasana hati harian.
+* Ringkasan suasana hati harian
+* Kalender
+* Responsif untuk portrait & landscape
 
-Grafik mood mingguan & bulanan.
+### 💬 2. Quotes
 
-Ringkas, cepat diakses, dan responsif untuk portrait & landscape.
+* Quotes motivasi harian
+* Bisa dicopy & dibagikan
+* Mode portrait & landscape
 
-💬 2. Quotes
+### ➕ 3. Add Mood
 
-Kumpulan quotes motivasi harian.
+* Pilih mood (happy, sad, angry, neutral, sleep)
+* Tambahkan catatan/jurnal
+* Tersimpan di database lokal
 
-Dapat dicopy atau dibagikan ke media sosial.
+### 📊 4. Mood Board
 
-Tampilan portrait & landscape tersedia.
+* Chart mood jangka panjang
+* Mendukung landscape
 
-➕ 3. Add Mood
+### ⚙️ 5. Settings
 
-Catat mood harian dengan ikon emosi (happy, sad, angry, neutral, sleep).
+* Bahasa (ID / EN)
+* Reminder mood
+* Preferensi tampilan
 
-Tambahkan catatan/jurnal singkat.
+---
 
-Disimpan ke database lokal.
+## 🖼️ Screenshot Aplikasi
 
-📊 4. Mood Board
+---
 
-Visualisasi suasana hati dalam bentuk chart.
+## 📍 Dashboard
 
-Menampilkan pola mood jangka panjang.
+|                                                         |                                                                              |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| ![dashboard](./app/src/main/res/drawable/dashboard.png) | ![dashboard\_landscape](./app/src/main/res/drawable/dashboard_landscape.png) |
 
-Mendukung tampilan landscape untuk analisis yang lebih luas.
+---
 
-⚙️ 5. Settings
+## 💬 Quotes
 
-Ganti bahasa (Indonesia / English).
+|                                                                  |                                                                        |                                                                |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------- |
+| ![page\_quotes](./app/src/main/res/drawable/page_quotes.png)     | ![landscape\_quotes](./app/src/main/res/drawable/landscape_quotes.png) | ![share\_quotes](./app/src/main/res/drawable/share_quotes.png) |
+| ![search\_quotes](./app/src/main/res/drawable/search_quotes.png) | ![copy\_quotes](./app/src/main/res/drawable/copy_quotes.png) |                                                                |
 
-Pengaturan notifikasi reminder mood.
+--- 
 
-Tema dan personalisasi lainnya.
+## ➕ Add Mood
 
-![dashboard](./assets/dashboard.png)
-![dashboard\_landscape](./assets/dashboard_landscape.png)
-![page\_quotes](./assets/page_quotes.png)
-![copy\_quotes](./assets/copy_quotes.png)
-![share\_quotes](./assets/share_quotes.png)
-![search\_quotes](./assets/search_quotes.png)
-![landscape\_quotes](./assets/landscape_quotes.png)
-![add\_mood](./assets/add_mood.png)
-![landscape\_moodchart](./assets/landscape_moodchart.png)
-![settings](./assets/settings.png)
-![landscape\_settings](./assets/landscape_settings.png)
-![language](./assets/language.png)
-![mood\_angry](./assets/mood_angry.png)
-![mood\_chart](./assets/mood_chart.png)
-![mood\_happy](./assets/mood_happy.png)
-![mood\_neutral](./assets/mood_neutral.png)
-![mood\_sad](./assets/mood_sad.png)
-![mood\_sleep](./assets/mood_sleep.png)
-![moodchart\_isi](./assets/moodchart_isi.png)
-![reminder\_time](./assets/reminder_time.png)
-![notifikasi\_mood](./assets/notifikasi_mood.png)
-![dash\_english](./assets/dash_english.png)
-![dash\_indo](./assets/dash_indo.png)
+|                                                        |
+| ------------------------------------------------------ |
+| ![add\_mood](./app/src/main/res/drawable/add_mood.png) |
 
+---
 
-🧭 Navigation Flow (Bottom Navigation)
-[ Diary ]  →  Dashboard utama
-[ Quotes ] →  Kumpulan motivasi
-[ Add Mood ] → Tambah suasana hati
-[ Mood Board ] → Grafik & riwayat mood
-[ Settings ] → Bahasa, reminder, preferensi
+## 📊 Mood Board
 
-Navigator memanfaatkan Jetpack Navigation Compose dan setiap tab memiliki composable screen masing-masing.
+|                                                            |                                                                              |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| ![mood\_chart](./app/src/main/res/drawable/mood_chart.png) | ![landscape\_moodchart](./app/src/main/res/drawable/landscape_moodchart.png) |
 
-🛠️ Teknologi yang Digunakan
-Kotlin
-Jetpack Compose
-Material 3
-Room / Local Database
-Navigation Compose
-ViewModel + State Management
+---
 
-🚀 Cara Menjalankan
-Clone repository
-git clone https://github.com/yourusername/moodtrackerapp.git
-Buka project di Android Studio.
-Sync Gradle.
-Run di emulator atau device.
+## 😊 Kalender Berdasarkan Mood
 
-🧑‍💻 Developer
+|                                                                  |                                                                |                                                            |
+| ---------------------------------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------- |
+| ![moodchart\_isi](./app/src/main/res/drawable/moodchart_isi.png) | ![mood\_happy](./app/src/main/res/drawable/mood_happy.png)     | ![mood\_sad](./app/src/main/res/drawable/mood_sad.png)     |
+| ![mood\_angry](./app/src/main/res/drawable/mood_angry.png)       | ![mood\_neutral](./app/src/main/res/drawable/mood_neutral.png) | ![mood\_sleep](./app/src/main/res/drawable/mood_sleep.png) |
 
-TIARASYAHRANI
+---
+
+## ⚙️ Settings
+
+|                                                                  |                                                                            |                                                       |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------- |
+| ![settings](./app/src/main/res/drawable/settings.png)            | ![landscape\_settings](./app/src/main/res/drawable/landscape_settings.png) | ![language](./app/src/main/res/drawable/language.png) |
+| ![reminder\_time](./app/src/main/res/drawable/reminder_time.png) | ![notifikasi\_mood](./app/src/main/res/drawable/notifikasi_mood.png)       |                                                       |
+
+---
+
+## 🌐 Dashboard Berdasarkan Bahasa
+
+|                                                                |                                                          |
+| -------------------------------------------------------------- | -------------------------------------------------------- |
+| ![dash\_english](./app/src/main/res/drawable/dash_english.png) | ![dash\_indo](./app/src/main/res/drawable/dash_indo.png) |
+
+---
+
+## 🧭 Navigation Flow (Bottom Navigation)
+
+```
+[ Diary ]      → Dashboard utama
+[ Quotes ]     → Kumpulan motivasi
+[ Add Mood ]   → Input suasana hati
+[ Mood Board ] → Riwayat & grafik mood
+[ Settings ]   → Bahasa, reminder, preferensi
+```
+
+Menggunakan **Jetpack Navigation Compose**, setiap tab memakai `Composable` screen masing-masing.
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* Kotlin
+* Jetpack Compose
+* Material 3
+* Room
+* Navigation Compose
+* ViewModel + State Management
+
+---
+
+## 🚀 Cara Menjalankan
+
+1. Clone repository:
+
+   ```
+   git clone https://github.com/tiarasyahrani/moodtrackerapp.git
+   ```
+
+2. Buka di **Android Studio**
+
+3. Sync Gradle
+
+4. Run di emulator / device
+
+---
+
+## 🧑‍💻 Developer
+
+**TIARA SYAHRANI**
